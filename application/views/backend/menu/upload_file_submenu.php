@@ -11,7 +11,7 @@
             'height': '40',
             'fileTypeExts': '*.zip; *.rar; *.ppt; *.pdf;', //กำหนดชนิดของไฟล์ที่สามารถอัพโหลดได้
             'multi': true, //เปิดใช้งานการอัพโหลดแบบหลายไฟล์ในครั้งเดียว
-            'queueSizeLimit': 1, //อัพโหลดได้ครั้งละ 5 ไฟล์
+            'queueSizeLimit': 5, //อัพโหลดได้ครั้งละ 5 ไฟล์
             'onUploadComplete': function (success) { //เมื่ออัพโหลดเสร็จแล้วให้เรียกใช้งาน function load()
                 window.location = "<?php echo site_url('menager_menu/get_sub_menu/' . $mas_id) ?>";
             }

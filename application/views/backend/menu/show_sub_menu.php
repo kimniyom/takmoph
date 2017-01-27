@@ -32,14 +32,17 @@
 </script>
 
 <script type="text/javascript">
-    function delete_sub_menu(sub_id, file) {
-        var url = "<?= site_url('menager_menu/delete_submenu') ?>";
-        var data = {sub_id: sub_id, file: file};
+    function delete_sub_menu(sub_id) {
+        var r = confirm('Are yor sure ...');
+        if (r == true) {
+            var url = "<?= site_url('menager_menu/delete_submenu') ?>";
+            var data = {sub_id: sub_id};
 
-        $.post(url, data,
-                function (success) {
-                    window.location.reload();
-                });// Endpost
+            $.post(url, data,
+                    function (success) {
+                        window.location.reload();
+                    });// Endpost
+        }
     }
 </script>
 
@@ -104,14 +107,17 @@ echo $model->breadcrumb($list, $active);
         <?php
         $i = 1;
         foreach ($sub_menu->result() as $rs):
+            $url = array('menager_menu/view', $rs->sub_id, $rs->mas_id);
             ?>
             <tr>
                 <td><?= $i++ ?></td>
-                <td align="left"><?= $rs->sub_name ?></td>
+                <td align="left">
+                    <a href="<?php echo site_url($url) ?>">
+                        <?= $rs->sub_name ?></a>
+                </td>
                 <td align="left">
                     <?php if ($rs->file != '') { ?>
-                        <a href="<?= base_url() ?>file_download/<?= $rs->file ?>">
-                            <img src="<?= base_url() ?>images/rar-icon.png"/></a>
+
                     <?php } else { ?>
                         <?= $rs->link ?>
                     <?php } ?>
@@ -124,7 +130,7 @@ echo $model->breadcrumb($list, $active);
                         <ul class="dropdown-menu">
                             <li><a href="#" onclick="edit_sub_menu('<?= $rs->sub_id ?>');">
                                     <span class=" glyphicon glyphicon-edit"></span> แก้ไข</a></li>
-                            <li><a href="#"  onclick="delete_sub_menu('<?= $rs->sub_id ?>', '<?= $rs->file ?>');">
+                            <li><a href="javascript:delete_sub_menu('<?= $rs->sub_id ?>')">
                                     <span class=" glyphicon glyphicon-trash"></span> ลบ</a></li>
                         </ul>
                     </div>
@@ -155,7 +161,9 @@ echo $model->breadcrumb($list, $active);
                     <br /> ประเภท :<br />
                     <select id="type_sub_menu" name="type_sub_menu" class="form-control">
                         <option value="0">ไฟล์</option>
+                        <!--
                         <option value="1">ลิงค์</option>
+                        -->
                     </select>
                     <div id="show_link" style="display:none;">
                         ลิงค์ :<br />

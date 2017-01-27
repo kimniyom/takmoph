@@ -22,7 +22,6 @@
         </div>
     </div>
 
-
     <hr id="hr"/>
 
     <table class="table table-hover table-bordered table-responsive" id="tb_submenu">
@@ -37,34 +36,38 @@
             $i = 0;
             foreach ($submenu->result() as $sub):
                 $i ++;
+                /*
+                  if ($sub->link != '') {
+                 */
+                $url = array('menu/views',$this->takmoph_libraries->encode($sub->sub_id),$this->takmoph_libraries->encode($sub->mas_id));
+                $target = "";
+                $typefile = "fa fa-file-zip-o";
+                /*
+                  } else {
 
-                if ($sub->link != '') {
-                    $link = site_url('menu/get_menu/' . $sub->link);
-                    $target = "";
-                    $typefile = "fa fa-link";
-                    $text = "Page";
-                } else {
-                    $link = base_url() . "file_download/" . $sub->file;
-                    $target = "target='_blank'";
-                    $text = "Download";
-                    $file = substr($sub->file, -3);
-                    if ($file == "pdf") {
-                        $typefile = "fa fa-file-pdf-o";
-                    } else if ($file == "zip") {
-                        $typefile = "fa fa-file-zip-o";
-                    } else if ($file == "rar") {
-                        $typefile = "fa fa-file-zip-o";
-                    } else {
-                        $typefile = "fa fa-file-o";
-                    }
-                }
+                  $link = base_url() . "file_download/" . $sub->file;
+                  $target = "target='_blank'";
+                  $text = "Download";
+                  $file = substr($sub->file, -3);
+                  if ($file == "pdf") {
+                  $typefile = "fa fa-file-pdf-o";
+                  } else if ($file == "zip") {
+                  $typefile = "fa fa-file-zip-o";
+                  } else if ($file == "rar") {
+                  $typefile = "fa fa-file-zip-o";
+                  } else {
+                  $typefile = "fa fa-file-o";
+                  }
+                  /*
+                  }
+                 * 
+                 */
                 ?>
                 <tr>
                     <td style=" display: none;"><?php echo $i; ?></td>
-                    <td><i class="<?php echo $typefile ?> fa-2x text-warning"></i> 
-                        <?= $sub->sub_name ?>
-                        <a href="<?= $link ?>" <?= $target ?> class="pull-right">
-                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-download"></i> <?php echo $text; ?></button></a>
+                    <td>
+                        <a href="<?php echo site_url($url)?>" style=" text-decoration: none;"><i class="<?php echo $typefile ?> fa-2x text-warning"></i> 
+                            <?= $sub->sub_name ?> <?php if($sub->d_update) echo "(".$model->thaidate($sub->d_update).")"; else echo ""; ?></a>
                     </td>
                 </tr>
 
@@ -72,8 +75,8 @@
         </tbody>
     </table>
 </div>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#tb_submenu").dataTable();
-        });
-    </script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#tb_submenu").dataTable();
+    });
+</script>

@@ -76,6 +76,26 @@ class menu extends CI_Controller {
         $this->output($data, $page, $head);
     }
 
+    public function views($ids, $groups) {
+        $id = $this->takmoph_libraries->decode($ids);
+        $group = $this->takmoph_libraries->decode($groups);
+        $Model = new menu_model();
+        $data['datas'] = $Model->getmenubyid($id);
+        $data['group'] = $Model->getgroupmenubyid($group);
+
+        $sql = "SELECT *
+                    FROM sub_menu_file s 
+                    WHERE s.submenu_id = '$id' ";
+        $data['file'] = $this->db->query($sql);
+
+        $data['groupmenu'] = $data['group']->mas_menu;
+        $data['id'] = $id;
+        $page = "menu/views";
+        $head = $data['datas']->sub_id;
+
+        $this->output($data, $page, $head);
+    }
+
 }
 
 /* End of file welcome.php */

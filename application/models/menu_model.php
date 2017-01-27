@@ -61,6 +61,24 @@ class menu_model extends CI_Model {
         
         return $result;
     }
+    
+    function getmenubyid($id = null){
+        $this->db->select("*");
+        $this->db->from("sub_menu");
+        $this->db->where("sub_id",$id);
+        
+        $query = $this->db->get()->row();
+        return $query;
+    }
+    
+    function getgroupmenubyid($id = null){
+        $this->db->select("*");
+        $this->db->from("mas_menu");
+        $this->db->where("id",$id);
+        
+        $query = $this->db->get()->row();
+        return $query;
+    }
 
 }
 

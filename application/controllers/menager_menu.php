@@ -112,7 +112,8 @@ class menager_menu extends CI_Controller {
         $data_save = array(
             'sub_name' => $_POST['sub_name'],
             'link' => $_POST['_link'],
-            'mas_id' => $_POST['mas_id']
+            'mas_id' => $_POST['mas_id'],
+            'd_update' => date("Y-m-d H:i:s")
         );
         $this->db->insert('sub_menu', $data_save);
 
@@ -120,21 +121,26 @@ class menager_menu extends CI_Controller {
             $sql = "SELECT MAX(sub_id) AS sub_id FROM sub_menu";
             $result = $this->db->query($sql);
             $row = $result->row();
-            echo $this->tak->redir('menager_menu/upload_file_sub_menu/' . $row->sub_id . '/' . $_POST['mas_id']);
+            echo $this->tak->redir('menager_menu/view/' . $row->sub_id . '/' . $_POST['mas_id']);
         } else {
             echo $this->tak->redir('menager_menu/get_sub_menu/' . $_POST['mas_id']);
         }
     }
 
-    public function upload_file_sub_menu($sub_id = '', $mas_id = '') {
+    public function view($sub_id = '', $mas_id = '') {
         $data['mas_id'] = $mas_id;
         $data['sub_id'] = $sub_id;
+
+        $sql = "SELECT *
+                    FROM sub_menu_file s 
+                    WHERE s.submenu_id = '$sub_id' ";
+        $data['file'] = $this->db->query($sql);
 
         $data['sub_menu'] = $this->tak->get_sub_menu_where($sub_id);
         $data['mas_menu'] = $this->tak->get_mas_menu_where($mas_id);
         $data['title'] = $data['sub_menu']->sub_name;
-        $page = "backend/menu/upload_file_submenu";
-        $head = 'อัพโหลดไฟล์';
+        $page = "backend/menu/view";
+        $head = $data['sub_menu']->sub_name;
 
         $this->output($data, $page, $head);
     }
@@ -159,10 +165,11 @@ class menager_menu extends CI_Controller {
                 $file_string = addslashes(fread(fopen($thefile[tmp_name], "r"), $thefile[size]));
 
                 $data = array(
+                    'submenu_id' => $sub_id,
                     'file' => $Name
                 );
-                $this->db->where('sub_id', $sub_id);
-                $this->db->update('sub_menu', $data);
+                //$this->db->where('sub_id', $sub_id);
+                $this->db->insert('sub_menu_file', $data);
                 move_uploaded_file($tempFile, $targetFile);
                 echo '1';
             } else {
@@ -187,11 +194,55 @@ class menager_menu extends CI_Controller {
     }
 
     public function delete_submenu() {
-        if ($_POST['file'] != "") {
-            unlink('file_download/' . $_POST['file']);
+        $id = $this->input->post('sub_id');
+        $sql = "SELECT * FROM sub_menu WHERE sub_id = '$id' ";
+        $result = $this->db->query($sql)->row();
+
+        if ($result->file != "") {
+            unlink('file_download/' . $result->file);
         }
-        $this->db->where('sub_id', $_POST['sub_id']);
+
+        $sqlFile = "SELECT * FROM sub_menu_file WHERE submenu_id = '$id' ";
+        $resultFile = $this->db->query($sqlFile);
+        foreach ($resultFile->result() as $rs) {
+            if ($rs->file) {
+                unlink('file_download/' . $rs->file);
+            }
+        }
+        $this->db->where('sub_id', $id);
         $this->db->delete('sub_menu');
+
+        $this->db->where('submenu_id', $id);
+        $this->db->delete('sub_menu_file');
+    }
+    
+    
+    public function deletefileold() {
+        $id = $this->input->post('id');
+
+        $sqlFile = "SELECT * FROM sub_menu WHERE sub_id = '$id' ";
+        $resultFile = $this->db->query($sqlFile)->row();
+
+        if ($resultFile->file) {
+            unlink('file_download/' . $resultFile->file);
+        }
+        
+        $culumn = array("file" => '');
+        $this->db->where('sub_id', $id);
+        $this->db->update('sub_menu',$culumn);
+    }
+    
+    public function deletefile() {
+        $id = $this->input->post('id');
+
+        $sqlFile = "SELECT * FROM sub_menu_file WHERE id = '$id' ";
+        $resultFile = $this->db->query($sqlFile)->row();
+
+        if ($resultFile->file) {
+            unlink('file_download/' . $resultFile->file);
+        }
+        $this->db->where('id', $id);
+        $this->db->delete('sub_menu_file');
     }
 
     /* ################# จัดการเมนูแบบฟอร์ม ########################### */
@@ -211,50 +262,49 @@ class menager_menu extends CI_Controller {
         $this->load->view('backend/menu/GetConfigMenu', $data);
     }
 
-    public function delete_admin_menu(){
-      $id = $this->input->post('id');
-      $this->db->select("*");
-      $this->db->from("admin_menu");
-      $this->db->where("admin_menu_id",$id);
-      $adminmenu = $this->db->get()->row();
+    public function delete_admin_menu() {
+        $id = $this->input->post('id');
+        $this->db->select("*");
+        $this->db->from("admin_menu");
+        $this->db->where("admin_menu_id", $id);
+        $adminmenu = $this->db->get()->row();
 
-      //Delete Masmenu
-      $this->db->where("admin_menu_id",$adminmenu->admin_menu_id);
-      $this->db->delete("mas_menu");
+        //Delete Masmenu
+        $this->db->where("admin_menu_id", $adminmenu->admin_menu_id);
+        $this->db->delete("mas_menu");
 
-      //Get File From dengue
-      $this->db->select("*");
-      $this->db->from("dengue");
-      $this->db->where("admin_menu_id",$adminmenu->admin_menu_id);
-      $dengue = $this->db->get();
-      foreach($dengue->result() as $file):
-        //Delete File
-        unlink("file_download/".$file->file);
-      endforeach;
+        //Get File From dengue
+        $this->db->select("*");
+        $this->db->from("dengue");
+        $this->db->where("admin_menu_id", $adminmenu->admin_menu_id);
+        $dengue = $this->db->get();
+        foreach ($dengue->result() as $file):
+            //Delete File
+            unlink("file_download/" . $file->file);
+        endforeach;
 
-      //Delete dengue
-      $this->db->where("admin_menu_id",$adminmenu->admin_menu_id);
-      $this->db->delete("dengue");
+        //Delete dengue
+        $this->db->where("admin_menu_id", $adminmenu->admin_menu_id);
+        $this->db->delete("dengue");
 
-      //Delete Img adminmenu
-      unlink("icon_menu/".$adminmenu->admin_menu_images);
-      $this->db->where("admin_menu_id",$id);
-      $this->db->delete("admin_menu");
-
+        //Delete Img adminmenu
+        unlink("icon_menu/" . $adminmenu->admin_menu_images);
+        $this->db->where("admin_menu_id", $id);
+        $this->db->delete("admin_menu");
     }
 
-    public function set_level(){
-      $id = $this->input->post('id');
-      $level = $this->input->post('level');
+    public function set_level() {
+        $id = $this->input->post('id');
+        $level = $this->input->post('level');
 
-      $columns = array(
-        "level" => $level
-      );
+        $columns = array(
+            "level" => $level
+        );
 
-      $this->db->where("id",$id);
-      $this->db->update("mas_menu",$columns);
+        $this->db->where("id", $id);
+        $this->db->update("mas_menu", $columns);
 
-      //echo "ID = ".$id." LEVEL = ".$level;
+        //echo "ID = ".$id." LEVEL = ".$level;
     }
 
 }
