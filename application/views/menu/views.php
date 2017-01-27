@@ -39,8 +39,7 @@ $active = $head;
     foreach ($file->result() as $rs): $i++;
         ?>
         <a href="<?= base_url() ?>file_download/<?= $rs->file ?>">
-            <img src="<?= base_url() ?>images/rar-icon.png"/> <?= $rs->file ?></a> 
-        <a href="javascript:DeleteFile('<?php echo $rs->id ?>')"><i class="fa fa-trash-o"></i></a><br/>
+            <img src="<?= base_url() ?>images/rar-icon.png"/> <?= $rs->file ?></a><br/>
     <?php endforeach; ?>
     <div class="pull-right">วันที่: <?php if($datas->d_update) echo $model->thaidate($datas->d_update); else echo ""; ?></div>
 </div>
