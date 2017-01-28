@@ -188,6 +188,16 @@ class pages extends CI_Controller {
 
         $this->output($data, $page, $head);
     }
+    
+    public function create($id = '', $admin_menu_id = ''){
+        $data['group'] = $this->tak->Get_name_group($admin_menu_id);
+        $data['admin_menu_id'] = $admin_menu_id;
+        $data['id'] = $id;
+        $page = "backend/pages/create";
+        $head = "เพิ่มหัวข้อ";
+
+        $this->output($data, $page, $head);
+    }
 
     public function update($id = '', $admin_menu_id = '') {
         $Model = new page_model();

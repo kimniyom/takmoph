@@ -87,7 +87,8 @@ echo $model->breadcrumb($list, $active);
 
 <h3><i class="fa fa-bookmark"></i> <?php echo $head ?></h3>
 <hr/>
-<button class="btn btn-default" onclick="additem()"><i class="fa fa-plus"></i> เพิ่มหัวข้อ</button>
+<a href="<?php echo site_url(array('backend/pages/create',$pageid,$admin_menu_id))?>">
+    <button class="btn btn-default"><i class="fa fa-plus"></i> เพิ่มหัวข้อ</button></a>
 <br/><br/>
 <div class="panel panel-default">
     <div class="panel-heading">
