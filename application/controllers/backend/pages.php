@@ -63,6 +63,7 @@ class pages extends CI_Controller {
         $group = $this->input->post('group');
         $admin_menu_id = $this->input->post('admin_menu_id');
         $data = array(
+            'id' => $this->input->post('id'),
             'title' => $this->input->post('title'),
             'admin_menu_id' => $admin_menu_id,
             'detail' => $this->input->post('detail'),
