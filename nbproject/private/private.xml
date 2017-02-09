@@ -8,24 +8,6 @@
             <file>file:/C:/xampp/htdocs/takmoph2016/application/views/backend/new_express/create.php</file>
             <file>file:/C:/xampp/htdocs/takmoph2016/application/models/takmoph_model.php</file>
         </group>
-        <group name="yii">
-            <file>file:/Applications/MAMP/htdocs/takmoph2016/application/views/backend/pages/view.php</file>
-            <file>file:/Applications/MAMP/htdocs/takmoph2016/application/controllers/upload_photo.php</file>
-            <file>file:/Applications/MAMP/htdocs/takmoph2016/application/views/news/index.php</file>
-            <file>file:/Applications/MAMP/htdocs/takmoph2016/application/views/news/view.php</file>
-            <file>file:/Applications/MAMP/htdocs/takmoph2016/application/views/backend/pages/update.php</file>
-            <file>file:/Applications/MAMP/htdocs/takmoph2016/application/controllers/takmoph_admin.php</file>
-            <file>file:/Applications/MAMP/htdocs/takmoph2016/application/controllers/backend/pages.php</file>
-            <file>file:/Applications/MAMP/htdocs/takmoph2016/application/controllers/menu.php</file>
-            <file>file:/Applications/MAMP/htdocs/takmoph2016/application/views/template2015.php</file>
-            <file>file:/Applications/MAMP/htdocs/takmoph2016/application/views/menu/filemenu.php</file>
-            <file>file:/Applications/MAMP/htdocs/takmoph2016/application/views/menu/view.php</file>
-            <file>file:/Applications/MAMP/htdocs/takmoph2016/application/views/menu/submenu.php</file>
-            <file>file:/Applications/MAMP/htdocs/takmoph2016/application/views/myhome.php</file>
-            <file>file:/Applications/MAMP/htdocs/takmoph2016/application/models/page_model.php</file>
-            <file>file:/Applications/MAMP/htdocs/takmoph2016/application/controllers/news.php</file>
-            <file>file:/Applications/MAMP/htdocs/takmoph2016/application/views/home_admin.php</file>
-            <file>file:/Applications/MAMP/htdocs/takmoph2016/application/views/backend/pages/index.php</file>
-        </group>
+        <group name="yii"/>
     </open-files>
 </project-private>
