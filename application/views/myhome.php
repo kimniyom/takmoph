@@ -146,7 +146,7 @@ $libraries = new takmoph_libraries();
                             </a>
 
                         </div>
-                    
+
                         <!-- HDC -->
                         <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
 
@@ -251,7 +251,7 @@ $libraries = new takmoph_libraries();
                     <?php endforeach; ?>
                 </div>
                 <div class="panel-footer" style=" text-align: right;">
-                    <a href="<?php echo site_url('menu/filemenu/11') ?>">
+                    <a href="<?php echo site_url('menu/filemenu/' . $this->takmoph_libraries->encode(11) . '/' . $this->tak->get_name_menu('11')) ?>">
                         <button type="button" class="btn btn-default btn-xs">ทั้งหมด ...</button>
                     </a>
                 </div>
@@ -279,7 +279,7 @@ $libraries = new takmoph_libraries();
                     <?php endforeach; ?>
                 </div>
                 <div class="panel-footer" style=" text-align: right;">
-                    <a href="<?php echo site_url('menu/filemenu/12') ?>">
+                    <a href="<?php echo site_url('menu/filemenu/' . $this->takmoph_libraries->encode(12) . '/' . $this->tak->get_name_menu('12')) ?>">
                         <button type="button" class="btn btn-default btn-xs">ทั้งหมด ...</button>
                     </a>
                 </div>
@@ -306,7 +306,7 @@ $libraries = new takmoph_libraries();
                     <?php endforeach; ?>
                 </div>
                 <div class="panel-footer" style=" text-align: right;">
-                    <a href="<?php echo site_url('menu/filemenu/13') ?>">
+                    <a href="<?php echo site_url('menu/filemenu/' . $this->takmoph_libraries->encode(13) . '/' . $this->tak->get_name_menu('13')) ?>">
                         <button type="button" class="btn btn-default btn-xs">ทั้งหมด ...</button>
                     </a>
                 </div>

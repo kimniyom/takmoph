@@ -40,11 +40,12 @@
             'fileTypeExts': '*.zip; *.rar; *.ppt; *.pdf; *.doc;', //กำหนดชนิดของไฟล์ที่สามารถอัพโหลดได้
             'multi': false, //เปิดใช้งานการอัพโหลดแบบหลายไฟล์ในครั้งเดียว
             'queueSizeLimit': 1, //อัพโหลดได้ครั้งละ 5 ไฟล์
-            'onCheck': function (file, exists) {
-                if (!exists) {
-                    window.location = "<?= site_url('backend/pages/view/' . $id . "/" . $admin_menu_id); ?>";
-                    //alert('The file ' + file.name + ' exists on the server.');
-                }
+            'onSelect': function (file) {
+                //alert('The file ' + file.name + ' was added to the queue.');
+                $("#filedata").val(file.name);
+            },
+            'onCancel': function (file) {
+                $("#filedata").val("");
             },
             'onUploadComplete': function (success) { //เมื่ออัพโหลดเสร็จแล้วให้เรียกใช้งาน function load()
                 window.location = "<?= site_url('backend/pages/view/' . $id . "/" . $admin_menu_id); ?>";
@@ -54,33 +55,40 @@
 
     function Save() {
         var url = "<?php echo site_url('backend/pages/save') ?>";
+        var id = "<?php echo $id ?>";
         var title = $("#title").val();
         var group = $("#group").val();
         var admin_menu_id = $("#admin_menu_id").val();
         var detail = CKEDITOR.instances.detail.getData();
+
         if (title == '' || detail == '') {
             alert("กรอกข้อมูลไม่ครบ ...");
             return false;
         }
         var data = {
+            id: id,
             title: title,
             detail: detail,
             group: group,
             admin_menu_id: admin_menu_id
         };
         $.post(url, data, function (datas) {
-            //var checkfile = $('#file_upload').uploadify();
-            /*
-            if (checkfile != '') {
+            if ($("#filedata").val() != '') {
                 $('#file_upload').uploadify('upload', '*');
             } else {
-                //window.location.reload();
-                //var Id = datas.id;
-                //var admin_menu_id = datas.admin_menu_id;
-                //'takmoph_admin/from_upload_file_dengue/' . $row->id . '/' . $_POST['admin_menu_id']
-                window.location = "<?//php echo site_url() ?>/backend/pages/getpage/" + admin_menu_id;
+                window.location = "<?= site_url('backend/pages/view/' . $id . "/" . $admin_menu_id); ?>";
             }
-            */
+            /*
+             if (checkfile != '') {
+             $('#file_upload').uploadify('upload', '*');
+             } else {
+             //window.location.reload();
+             //var Id = datas.id;
+             //var admin_menu_id = datas.admin_menu_id;
+             //'takmoph_admin/from_upload_file_dengue/' . $row->id . '/' . $_POST['admin_menu_id']
+             window.location = "<?//php echo site_url() ?>/backend/pages/getpage/" + admin_menu_id;
+             }
+             */
         });
     }
 </script>
@@ -99,6 +107,9 @@ echo $model->breadcrumb($list, $active);
 ?>
 <br/>
 <hr/>
+
+<input type="hidden" id="filedata"/>
+
 <div class="well well-sm">
     <label>หัวข้อ</label>
     <input type="text" id="title" name="title" required="required" class="form-control input-sm"/>

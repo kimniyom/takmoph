@@ -46,7 +46,7 @@ class pages extends CI_Controller {
 
     public function getpage($id = '') {
         $TakModel = new takmoph_model();
-        $data['pageid'] = $TakModel->GetMaxId("dengue", "id");
+        $data['pageid'] = $TakModel->GetMaxId("dengue", "id")+1;
         $data['admin_menu_id'] = $id;
         $data['dengue'] = $this->tak->get_dengue($id);
         $page = "backend/pages/index";
@@ -63,6 +63,7 @@ class pages extends CI_Controller {
         $group = $this->input->post('group');
         $admin_menu_id = $this->input->post('admin_menu_id');
         $data = array(
+            'id' => $this->input->post('id'),
             'title' => $this->input->post('title'),
             'admin_menu_id' => $admin_menu_id,
             'detail' => $this->input->post('detail'),

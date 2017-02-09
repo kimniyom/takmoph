@@ -57,6 +57,7 @@
             return false;
         }
         var data = {
+            
             title: title,
             detail: detail,
             group: group,
